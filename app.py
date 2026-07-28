@@ -35,6 +35,14 @@ analysis_mode = st.selectbox(
     ],
 )
 
+st.info(
+    "Privacy notice: Your CV is processed only to generate the analysis. "
+    "Avoid uploading documents containing unnecessary sensitive information."
+)
+
+st.caption(
+    "AI-generated feedback is for guidance only and is not an official ATS assessment."
+)
 uploaded_file = st.file_uploader(
     "Upload your Resume (PDF)",
     type=["pdf"],
@@ -161,7 +169,26 @@ Do not invent facts not found in the CV.
                 )
 
             except Exception as error:
-                st.error(f"Something went wrong: {error}")
+                error_message = str(error)
+
+                if "503" in error_message or "UNAVAILABLE" in error_message:
+                    st.warning(
+                        "Gemini is temporarily busy. "
+                        "Please wait a moment and try again."
+                    )
+                elif (
+                    "429" in error_message
+                    or "RESOURCE_EXHAUSTED" in error_message
+                ):
+                    st.warning(
+                        "The API usage limit has been reached. "
+                        "Please wait and try again later."
+                    )
+                else:
+                    st.error(
+                        "The analysis could not be completed. "
+                        "Please check your connection and try again."
+                    )
 
             finally:
                 if temp_path and os.path.exists(temp_path):
