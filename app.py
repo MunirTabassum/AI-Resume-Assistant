@@ -18,6 +18,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+# Custom design
 st.markdown(
     """
     <style>
@@ -25,13 +26,13 @@ st.markdown(
             background:
                 radial-gradient(
                     circle at top left,
-                    rgba(99, 102, 241, 0.10),
-                    transparent 32%
+                    rgba(99, 102, 241, 0.12),
+                    transparent 35%
                 ),
                 linear-gradient(
                     180deg,
                     #f8fafc 0%,
-                    #ffffff 45%,
+                    #ffffff 50%,
                     #f8fafc 100%
                 );
         }
@@ -45,25 +46,25 @@ st.markdown(
         .hero {
             padding: 2.2rem;
             border-radius: 24px;
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(79, 70, 229, 0.12),
-                    rgba(14, 165, 233, 0.08)
-                );
-            border: 1px solid rgba(99, 102, 241, 0.18);
+            background: linear-gradient(
+                135deg,
+                rgba(79, 70, 229, 0.14),
+                rgba(14, 165, 233, 0.10)
+            );
+            border: 1px solid rgba(99, 102, 241, 0.20);
             box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.7rem;
         }
 
-        .hero h1 {
+        .hero-title {
             margin: 0;
             font-size: 2.8rem;
             line-height: 1.1;
             color: #0f172a;
+            font-weight: 800;
         }
 
-        .hero p {
+        .hero-text {
             margin-top: 0.8rem;
             margin-bottom: 0;
             font-size: 1.08rem;
@@ -79,65 +80,51 @@ st.markdown(
         }
 
         .feature-card {
-            padding: 0.9rem 1rem;
+            padding: 0.95rem 1rem;
             border-radius: 14px;
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.82);
             border: 1px solid #e2e8f0;
             color: #334155;
             font-size: 0.94rem;
-            font-weight: 600;
-        }
-
-        div[data-testid="stSelectbox"] > div,
-        div[data-testid="stTextArea"] > div,
-        div[data-testid="stFileUploader"] {
-            border-radius: 16px;
+            font-weight: 650;
         }
 
         div[data-testid="stFileUploader"] {
             padding: 1rem;
+            border-radius: 16px;
             border: 1px solid #dbeafe;
-            background: rgba(248, 250, 252, 0.85);
-        }
-
-        div.stButton > button,
-        div.stDownloadButton > button {
-            border-radius: 12px;
-            font-weight: 700;
-            padding: 0.65rem 1.25rem;
-            border: none;
-        }
-
-        div.stButton > button {
-            background: linear-gradient(
-                135deg,
-                #4f46e5,
-                #2563eb
-            );
-            color: white;
-        }
-
-        div.stButton > button:hover {
-            background: linear-gradient(
-                135deg,
-                #4338ca,
-                #1d4ed8
-            );
-            color: white;
-        }
-
-        div.stDownloadButton > button {
-            background: #0f172a;
-            color: white;
+            background: rgba(248, 250, 252, 0.90);
         }
 
         div[data-testid="stAlert"] {
             border-radius: 14px;
         }
 
+        div.stButton > button {
+            border-radius: 12px;
+            font-weight: 700;
+            padding: 0.65rem 1.25rem;
+            border: none;
+            background: linear-gradient(135deg, #4f46e5, #2563eb);
+            color: white;
+        }
+
+        div.stButton > button:hover {
+            background: linear-gradient(135deg, #4338ca, #1d4ed8);
+            color: white;
+        }
+
+        div.stDownloadButton > button {
+            border-radius: 12px;
+            font-weight: 700;
+            padding: 0.65rem 1.25rem;
+            background: #0f172a;
+            color: white;
+        }
+
         @media (max-width: 800px) {
-            .hero h1 {
-                font-size: 2.15rem;
+            .hero-title {
+                font-size: 2.1rem;
             }
 
             .feature-row {
@@ -149,20 +136,25 @@ st.markdown(
             }
         }
     </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-    <div class="hero">
-        <h1>📄 AI Resume Assistant</h1>
-        <p>
-            Analyse your CV for the UK job market, compare it with
-            job descriptions, discover skill gaps and prepare for interviews.
-        </p>
-
-        <div class="feature-row">
-            <div class="feature-card">🎯 CV and job matching</div>
-            <div class="feature-card">🧠 AI improvement suggestions</div>
-            <div class="feature-card">💬 Interview preparation</div>
-        </div>
-    </div>
+# Header section
+st.markdown(
+    """
+<div class="hero">
+<h1 class="hero-title">📄 AI Resume Assistant</h1>
+<p class="hero-text">
+Analyse your CV for the UK job market, compare it with job descriptions,
+discover skill gaps and prepare for interviews.
+</p>
+<div class="feature-row">
+<div class="feature-card">🎯 CV and job matching</div>
+<div class="feature-card">🧠 AI improvement suggestions</div>
+<div class="feature-card">💬 Interview preparation</div>
+</div>
+</div>
     """,
     unsafe_allow_html=True,
 )
