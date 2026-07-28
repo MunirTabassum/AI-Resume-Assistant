@@ -79,6 +79,12 @@ Be practical, clear and concise.
 
                 st.subheader("CV and Job Match Report")
                 st.markdown(response.text)
+                st.download_button(
+                    label="Download Report",
+                    data=response.text,
+                    file_name="cv_job_match_report.txt",
+                    mime="text/plain",
+                )
 
             except Exception as error:
                 st.error(f"Something went wrong: {error}")
