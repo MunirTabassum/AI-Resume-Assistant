@@ -17,6 +17,7 @@ An AI-powered web application that analyses PDF resumes for the UK job market us
 - Suggest targeted CV improvements
 - Generate likely interview questions
 - Download the cv and job match report as a text file
+- Choose between general Cv analysis, job matching, Cv improvements and interview - question generation
 
 ## Technologies Used
 
