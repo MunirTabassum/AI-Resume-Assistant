@@ -10,6 +10,12 @@ An AI-powered web application that analyses PDF resumes for the UK job market us
 - Highlight weak areas
 - Suggest practical improvements
 - Give an overall CV score out of 100
+- Compare a PDF CV with a job description
+- Generate a CV-to-job match score
+- Identify matching skills and missing keywords
+- Highlight experience gaps
+- Suggest targeted CV improvements
+- Generate likely interview questions
 
 ## Technologies Used
 
