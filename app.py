@@ -14,13 +14,161 @@ api_key = os.getenv("GEMINI_API_KEY")
 st.set_page_config(
     page_title="AI Resume Assistant",
     page_icon="📄",
+    layout="wide",
+    initial_sidebar_state="collapsed",
 )
 
-st.title("📄 AI Resume Assistant")
-st.write("Analyse your CV with Google Gemini for the UK job market.")
+st.markdown(
+    """
+    <style>
+        .stApp {
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(99, 102, 241, 0.10),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    180deg,
+                    #f8fafc 0%,
+                    #ffffff 45%,
+                    #f8fafc 100%
+                );
+        }
+
+        .main .block-container {
+            max-width: 1050px;
+            padding-top: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .hero {
+            padding: 2.2rem;
+            border-radius: 24px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(79, 70, 229, 0.12),
+                    rgba(14, 165, 233, 0.08)
+                );
+            border: 1px solid rgba(99, 102, 241, 0.18);
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            line-height: 1.1;
+            color: #0f172a;
+        }
+
+        .hero p {
+            margin-top: 0.8rem;
+            margin-bottom: 0;
+            font-size: 1.08rem;
+            color: #475569;
+            max-width: 760px;
+        }
+
+        .feature-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin-top: 1.4rem;
+        }
+
+        .feature-card {
+            padding: 0.9rem 1rem;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid #e2e8f0;
+            color: #334155;
+            font-size: 0.94rem;
+            font-weight: 600;
+        }
+
+        div[data-testid="stSelectbox"] > div,
+        div[data-testid="stTextArea"] > div,
+        div[data-testid="stFileUploader"] {
+            border-radius: 16px;
+        }
+
+        div[data-testid="stFileUploader"] {
+            padding: 1rem;
+            border: 1px solid #dbeafe;
+            background: rgba(248, 250, 252, 0.85);
+        }
+
+        div.stButton > button,
+        div.stDownloadButton > button {
+            border-radius: 12px;
+            font-weight: 700;
+            padding: 0.65rem 1.25rem;
+            border: none;
+        }
+
+        div.stButton > button {
+            background: linear-gradient(
+                135deg,
+                #4f46e5,
+                #2563eb
+            );
+            color: white;
+        }
+
+        div.stButton > button:hover {
+            background: linear-gradient(
+                135deg,
+                #4338ca,
+                #1d4ed8
+            );
+            color: white;
+        }
+
+        div.stDownloadButton > button {
+            background: #0f172a;
+            color: white;
+        }
+
+        div[data-testid="stAlert"] {
+            border-radius: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .hero h1 {
+                font-size: 2.15rem;
+            }
+
+            .feature-row {
+                grid-template-columns: 1fr;
+            }
+
+            .main .block-container {
+                padding-top: 1rem;
+            }
+        }
+    </style>
+
+    <div class="hero">
+        <h1>📄 AI Resume Assistant</h1>
+        <p>
+            Analyse your CV for the UK job market, compare it with
+            job descriptions, discover skill gaps and prepare for interviews.
+        </p>
+
+        <div class="feature-row">
+            <div class="feature-card">🎯 CV and job matching</div>
+            <div class="feature-card">🧠 AI improvement suggestions</div>
+            <div class="feature-card">💬 Interview preparation</div>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 if not api_key:
-    st.error("API key not found. Check your .env file.")
+    st.error("API key not found. Check your environment settings.")
     st.stop()
 
 client = genai.Client(api_key=api_key)
@@ -43,6 +191,7 @@ st.info(
 st.caption(
     "AI-generated feedback is for guidance only and is not an official ATS assessment."
 )
+
 uploaded_file = st.file_uploader(
     "Upload your Resume (PDF)",
     type=["pdf"],
@@ -53,7 +202,7 @@ job_description = ""
 if analysis_mode == "CV and Job Match":
     job_description = st.text_area(
         "Paste the job description",
-        height=200,
+        height=220,
         placeholder="Paste the full job description here...",
     )
 
@@ -79,6 +228,7 @@ Analyse the attached CV and provide:
 6. Overall CV score out of 100
 
 Do not invent experience, skills or qualifications.
+Be practical, clear and concise.
 """,
             "CV and Job Match": f"""
 You are an expert UK recruitment consultant and ATS specialist.
@@ -98,6 +248,7 @@ Provide:
 7. Five likely interview questions
 
 Do not invent experience, skills or qualifications.
+Be practical, clear and concise.
 """,
             "CV Improvement Suggestions": """
 You are an expert UK CV writer.
@@ -112,6 +263,7 @@ Review the attached CV and provide:
 6. Ten practical improvements
 
 Do not invent experience, skills or qualifications.
+Be practical, clear and concise.
 """,
             "Interview Questions": """
 Act as a UK hiring manager.
@@ -124,6 +276,7 @@ Based only on the attached CV, generate:
 4. What a strong answer should include for each category
 
 Do not invent facts not found in the CV.
+Be practical, clear and concise.
 """,
         }
 
@@ -158,6 +311,7 @@ Do not invent facts not found in the CV.
                             raise
                         time.sleep(3)
 
+                st.divider()
                 st.subheader(analysis_mode)
                 st.markdown(response.text)
 
