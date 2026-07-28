@@ -11,7 +11,7 @@ load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
 st.title("📄 AI Resume Assistant")
-st.write("Upload your CV and let Gemini analyse it.")
+st.write("Upload your CV and compare it with a job description.")
 
 if not api_key:
     st.error("API key not found. Check your .env file.")
@@ -21,45 +21,63 @@ client = genai.Client(api_key=api_key)
 
 uploaded_file = st.file_uploader(
     "Upload your Resume (PDF)",
-    type=["pdf"]
+    type=["pdf"],
+)
+
+job_description = st.text_area(
+    "Paste the job description",
+    height=200,
+    placeholder="Paste the full job description here...",
 )
 
 if uploaded_file:
     st.success("Resume uploaded successfully!")
 
     if st.button("Analyse Resume"):
+        if not job_description.strip():
+            st.warning("Please paste a job description first.")
+            st.stop()
+
         with st.spinner("Gemini is analysing your resume..."):
             temp_path = None
 
             try:
                 with tempfile.NamedTemporaryFile(
                     delete=False,
-                    suffix=".pdf"
+                    suffix=".pdf",
                 ) as temp_file:
                     temp_file.write(uploaded_file.getvalue())
                     temp_path = temp_file.name
 
                 gemini_file = client.files.upload(file=temp_path)
 
-                prompt = """
-Analyse this resume for the UK job market.
+                prompt = f"""
+You are an expert UK recruitment consultant and ATS specialist.
 
-Give:
-1. A short professional summary
-2. Strongest skills
-3. Weak areas
-4. Five improvements
-5. An overall score out of 100
+Analyse the attached CV and compare it with this job description:
 
-Do not invent any experience or qualifications.
+{job_description}
+
+Provide:
+
+1. CV-to-job match score out of 100
+2. Matching skills and experience
+3. Missing keywords
+4. Important experience gaps
+5. Suggested CV improvements
+6. Whether the candidate should apply
+7. Five likely interview questions
+
+Do not invent any experience, skills or qualifications.
+Be practical, clear and concise.
 """
 
                 response = client.models.generate_content(
-                    model="gemini-3.6-flash",
-                    contents=[gemini_file, prompt]
+                    model="gemini-3.5-flash",
+                    contents=[gemini_file, prompt],
                 )
 
-                st.subheader("Resume Analysis")
+                st.subheader("CV and Job Match Report")
                 st.markdown(response.text)
 
             except Exception as error:
