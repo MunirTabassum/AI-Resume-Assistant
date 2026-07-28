@@ -2,6 +2,9 @@
 
 An AI-powered web application that analyses PDF resumes for the UK job market using Google Gemini.
 
+## Live Demo
+Try the app here: https://ai-resume-assistant-amzqmzxvwt7u4jlkchqmex.streamlit.app/
+
 ## Features
 
 - Upload a resume in PDF format
